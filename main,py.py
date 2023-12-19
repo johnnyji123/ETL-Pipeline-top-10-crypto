@@ -29,7 +29,13 @@ df = df.drop(["slug", "num_market_pairs", "date_added", "tags", "max_supply", "c
          "infinite_supply", "platform", "self_reported_circulating_supply", "self_reported_market_cap", "tvl_ratio",
          "last_updated", "quote.USD.percent_change_1h", "quote.USD_percent_change_30d", "quote.USD_percent_change_90d",
          "quote.USD.market_cap", "quote.USD.fully_diluted_market_cap", "quote.USD.tvl", "quote.USD.last_updated", "platform.id",
-         "platform.name", "platform.symbol", "platform.slug", "platform.token_address"
+         "platform.name", "platform.symbol", "platform.slug", "platform.token_address", "quote.USD.percent_change_60d",
+         "quote.USD.percent_change_90d"
          ])
 
-df.rename({"quote.USD.price": "price"})
+df = df.rename({"quote.USD.price": "price", "quote.USD.volume_24h": "24h_volume",
+           "quote.USD.percent_change_24h": "pct_change_24h", "quote.USD.percent_change_7d" : "pct_change_7d",
+           "quote.USD.percent_change_30d": "pct_change_30d", "quote.USD.market_cap_dominance": "market_cap_dominance"
+           })
+
+df.columns
