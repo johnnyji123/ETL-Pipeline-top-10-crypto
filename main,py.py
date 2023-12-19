@@ -18,6 +18,7 @@ db = mysql.connector.connect(
 
 cursor = db.cursor()
 
+# table stock_data_pipeline
 
 def fetch_data(url):
     try:
@@ -72,7 +73,28 @@ df = df.with_columns(
     
 
 # my dictionary
-data_dict = df.to_dict(as_series = True)
+data_dict = df.to_dict(as_series = False)
 
+keys = []
+values = []
 
-    
+def extract_key_value(dictionary):
+    for key, value in dictionary.items():
+        keys.append(key)
+        values.append(value)
+        
+extract_key_value(data_dict)
+
+cursor.execute(
+    "CREATE TABLE stock_data_pipeline ("
+    "name TEXT," 
+    "symbol TEXT,"
+    "cmc_rank INTEGER," 
+    "price FLOAT,"
+    "24h_volume FLOAT," 
+    "pct_change_price_24h FLOAT," 
+    "pct_change_price_7d FLOAT," 
+    "pct_change_price_30d FLOAT," 
+    "market_cap_dominance FLOAT)")
+
+db.commit()
