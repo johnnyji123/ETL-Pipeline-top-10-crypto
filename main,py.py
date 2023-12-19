@@ -85,16 +85,3 @@ def extract_key_value(dictionary):
         
 extract_key_value(data_dict)
 
-cursor.execute(
-    "CREATE TABLE stock_data_pipeline ("
-    "name TEXT," 
-    "symbol TEXT,"
-    "cmc_rank INTEGER," 
-    "price FLOAT,"
-    "24h_volume FLOAT," 
-    "pct_change_price_24h FLOAT," 
-    "pct_change_price_7d FLOAT," 
-    "pct_change_price_30d FLOAT," 
-    "market_cap_dominance FLOAT)")
-
-db.commit()
