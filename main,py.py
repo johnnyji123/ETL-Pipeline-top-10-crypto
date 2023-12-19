@@ -23,5 +23,13 @@ headers = {
 
 response = requests.get(url, params = parameters, headers = headers)
 data = json.loads(response.text)
-data
+df = pd.json_normalize(data['data'])
+df = pl.from_pandas(df)
+df = df.drop(["slug", "num_market_pairs", "date_added", "tags", "max_supply", "circulating_supply", "total_supply",
+         "infinite_supply", "platform", "self_reported_circulating_supply", "self_reported_market_cap", "tvl_ratio",
+         "last_updated", "quote.USD.percent_change_1h", "quote.USD_percent_change_30d", "quote.USD_percent_change_90d",
+         "quote.USD.market_cap", "quote.USD.fully_diluted_market_cap", "quote.USD.tvl", "quote.USD.last_updated", "platform.id",
+         "platform.name", "platform.symbol", "platform.slug", "platform.token_address"
+         ])
 
+df.rename({"quote.USD.price": "price"})
