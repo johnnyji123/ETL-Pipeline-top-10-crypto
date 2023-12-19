@@ -12,28 +12,41 @@ url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
 db = mysql.connector.connect(
         host = "localhost",
         user = "root",
-        password = "projects123123"
+        password = "projects123123",
+        database = "stock_pipeline"
     )
 
 cursor = db.cursor()
 
 
-parameters = {
-    "start": "1",
-    "limit": "10",
-    "convert": "USD"
-    }
+def fetch_data(url):
+    try:
+        parameters = {
+            "start": "1",
+            "limit": "10",
+            "convert": "USD"
+            }
 
-headers = {
-    "Accepts": "application/json",
-    'X-CMC_PRO_API_KEY': 'edf8eb28-4a4f-4ca8-8be1-3fb45d624c36'
-    }
+        headers = {
+            "Accepts": "application/json",
+            'X-CMC_PRO_API_KEY': 'edf8eb28-4a4f-4ca8-8be1-3fb45d624c36'
+            }
+        
+        
+        response = requests.get(url, params = parameters, headers = headers)
+        data = json.loads(response.text)
+        df = pd.json_normalize(data['data'])
+        df = pl.from_pandas(df)
+        return df
+    
+    
+    except Exception as e:
+        print("couldn't fetch data", e)
+        
+df = fetch_data(url)    
 
 
-response = requests.get(url, params = parameters, headers = headers)
-data = json.loads(response.text)
-df = pd.json_normalize(data['data'])
-df = pl.from_pandas(df)
+
 df = df.drop(["id","slug", "num_market_pairs", "date_added", "tags", "max_supply", "circulating_supply", "total_supply",
          "infinite_supply", "platform", "self_reported_circulating_supply", "self_reported_market_cap", "tvl_ratio",
          "last_updated", "quote.USD.percent_change_1h", "quote.USD_percent_change_30d", "quote.USD_percent_change_90d",
@@ -55,6 +68,11 @@ df = df.with_columns(
         pl.col("pct_change_price_30d").round(decimals = 2),
         pl.col("market_cap_dominance").round(decimals = 2),
         pl.col("price").round(decimals = 2)
-    
     )
+    
+
+# my dictionary
+data_dict = df.to_dict(as_series = True)
+
+
     
