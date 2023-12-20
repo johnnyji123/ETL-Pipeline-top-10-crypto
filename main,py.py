@@ -5,6 +5,7 @@ import requests
 import json
 from sqlalchemy import create_engine
 from apscheduler.schedulers.background import BlockingScheduler
+import smtplib
 
 
 api_key = "69fc1391-a7e7-4dc0-8dbe-c96a959cd5c1"
@@ -45,7 +46,14 @@ def fetch_data(url):
     
     
     except Exception as e:
-        print("couldn't fetch data", e)
+        from_email = "example@gmail.com"
+        to_email = "example@hotmail.com"
+        message = "couldn't fetch data", e
+        
+        smtp_server = smtplib.SMTP("smtp.gmail.com", 587)
+        smtp_server.starttls()
+        smtp_server.login(from_email, "app password")
+        smtp_server.sendmail(from_email, to_email, message)
         
 df = fetch_data(url)    
 
@@ -124,7 +132,7 @@ def update_database(current_data):
 
 
 scheduler = BlockingScheduler()
-scheduler.add__job(update_database, 'interval', hours = 5)
+scheduler.add_job(update_database(), 'interval', hours = 1)
 scheduler.start()
         
         
