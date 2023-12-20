@@ -72,12 +72,35 @@ df = df.with_columns(
         pl.col("price").round(decimals = 2)
     )
     
+data_dict = df.to_dict(as_series = False)
+data_dict
+values = []
 
-df = df.to_pandas()
-# my dictionary
-#data_dict = df.to_dict(as_series = False)
 
 
-connection_string = "mysql+mysqlconnector://root:projects123123@localhost/stock_pipeline"
-engine = create_engine(connection_string)
-df.to_sql("stock_data_pipeline", con = engine, if_exists = "append", index= False)    
+        
+def extract_values_from_dict(dictionary):
+    for key, value in dictionary.items():
+        values.append(value)
+
+extract_values_from_dict(data_dict)
+    
+
+transpose_list = list(map(list, zip(*values)))   
+transpose_list
+
+def insert_values_to_database():
+    for row in transpose_list:
+        add = "INSERT INTO stock_data_pipeline (name, symbol, cmc_rank, price, 24h_volume, pct_change_price_24h, pct_change_price_7d, pct_change_price_30d, market_cap_dominance) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        cursor.execute(add, row)
+        db.commit()
+
+
+insert_values_to_database() 
+
+    
+
+
+
+
+    
