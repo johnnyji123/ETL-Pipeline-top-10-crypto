@@ -8,8 +8,6 @@ from apscheduler.schedulers.background import BlockingScheduler
 import smtplib
 
 
-
-
 url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
 
 
@@ -90,6 +88,7 @@ df = df.with_columns(
         pl.col("price").round(decimals = 2)
     )
 
+
 # Converting dataframe to a dictionary    
 data_dict = df.to_dict(as_series = False)
 data_dict
@@ -104,8 +103,10 @@ def extract_values_from_dict(dictionary):
 extract_values_from_dict(data_dict)
     
 
+
 # Transpose list - Matching the indexes of each sub-list
 transpose_list = list(map(list, zip(*values)))   
+
 
 
 # Inserting values into database
@@ -115,7 +116,7 @@ def insert_values_to_database():
         cursor.execute(add, row)
         db.commit()
 
-    
+        
 
 # Updating values in the database
 def update_database(current_data):
@@ -139,7 +140,7 @@ def update_database(current_data):
         """    
         cursor.execute(update, (*values, symbol))   
         db.commit()
-            
+                    
 
 
 # Automating update- database updates every hour
