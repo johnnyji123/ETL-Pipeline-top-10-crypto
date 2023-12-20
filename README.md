@@ -18,9 +18,9 @@ The data extraction phase involves fetching data from the CoinMarketCap API usin
 
 # 2) Error Hadnling
 In case an exception occurs during the data fetching process, an email notification is sent to the specified email address. This is achieved using the smtplib module to connect to an SMTP server and send an email with details about the error.
+
+
 <br></br>
-
-
 
 
 
