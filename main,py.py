@@ -3,6 +3,7 @@ import polars as pl
 import mysql.connector
 import requests
 import json
+from sqlalchemy import create_engine
 
 api_key = "69fc1391-a7e7-4dc0-8dbe-c96a959cd5c1"
 
@@ -72,16 +73,11 @@ df = df.with_columns(
     )
     
 
+df = df.to_pandas()
 # my dictionary
-data_dict = df.to_dict(as_series = False)
+#data_dict = df.to_dict(as_series = False)
 
-keys = []
-values = []
 
-def extract_key_value(dictionary):
-    for key, value in dictionary.items():
-        keys.append(key)
-        values.append(value)
-        
-extract_key_value(data_dict)
-
+connection_string = "mysql+mysqlconnector://root:projects123123@localhost/stock_pipeline"
+engine = create_engine(connection_string)
+df.to_sql("stock_data_pipeline", con = engine, if_exists = "append", index= False)    
