@@ -76,8 +76,6 @@ data_dict = df.to_dict(as_series = False)
 data_dict
 values = []
 
-
-
         
 def extract_values_from_dict(dictionary):
     for key, value in dictionary.items():
@@ -87,7 +85,6 @@ extract_values_from_dict(data_dict)
     
 
 transpose_list = list(map(list, zip(*values)))   
-transpose_list
 
 def insert_values_to_database():
     for row in transpose_list:
@@ -95,9 +92,43 @@ def insert_values_to_database():
         cursor.execute(add, row)
         db.commit()
 
+    
+#insert_values_to_database()
 
-insert_values_to_database() 
+#cursor.execute("DELETE FROM stock_data_pipeline")
+#db.commit() 
 
+def update_database(current_data):
+    for values in current_data:
+        symbol = values[1]
+        
+        
+        update = """
+        UPDATE stock_data_pipeline
+        SET
+        name = %s,
+        symbol = %s,
+        cmc_rank =%s,
+        price = %s,
+        24h_volume = %s,
+        pct_change_price_24h = %s,
+        pct_change_price_7d = %s,
+        pct_change_price_30d = %s,
+        market_cap_dominance = %s
+        WHERE symbol = %s
+        
+        """    
+        cursor.execute(update, (*values, symbol))
+        db.commit()
+
+       
+
+      
+        
+        
+# the row should update according to the index
+
+            
     
 
 
