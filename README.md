@@ -10,25 +10,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # 1) Data Extraction
 The data extraction phase involves fetching data from the CoinMarketCap API using the fetch_data function. The API key is included in the headers for authentication. The retrieved data is then normalized into a Pandas DataFrame and converted to a Polars DataFrame for efficient processing.
 
