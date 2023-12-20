@@ -1,6 +1,6 @@
 # Cryptocurrency Data Pipeline
 * Overview: This project is a comprehensive data pipeline designed to fetch, process, and store real-time cryptocurrency data. The pipeline includes steps for data retrieval from the CoinMarketCap API, data preprocessing using Polars DataFrames, and the storage of the processed data in a MySQL database. Additionally, the project features an ETL (Extract, Transform, Load) mechanism, automated updates using APScheduler, and a failsafe mechanism with email notifications.
-* 
+  
 # ETL Process Explanation:
 
 # 1) Data Extraction
