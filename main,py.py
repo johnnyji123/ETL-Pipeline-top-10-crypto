@@ -4,6 +4,8 @@ import mysql.connector
 import requests
 import json
 from sqlalchemy import create_engine
+from apscheduler.schedulers.background import BlockingScheduler
+
 
 api_key = "69fc1391-a7e7-4dc0-8dbe-c96a959cd5c1"
 
@@ -95,13 +97,10 @@ def insert_values_to_database():
     
 #insert_values_to_database()
 
-#cursor.execute("DELETE FROM stock_data_pipeline")
-#db.commit() 
 
 def update_database(current_data):
     for values in current_data:
         symbol = values[1]
-        
         
         update = """
         UPDATE stock_data_pipeline
@@ -120,13 +119,15 @@ def update_database(current_data):
         """    
         cursor.execute(update, (*values, symbol))
         db.commit()
+        
 
-       
 
-      
+
+scheduler = BlockingScheduler()
+scheduler.add__job(update_database, 'interval', hours = 5)
+scheduler.start()
         
         
-# the row should update according to the index
 
             
     
