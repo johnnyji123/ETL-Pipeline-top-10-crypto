@@ -145,7 +145,7 @@ def update_database(current_data):
 
 # Automating update- database updates every hour
 scheduler = BlockingScheduler()
-scheduler.add_job(update_database(), 'interval', hours = 1)
+scheduler.add_job(update_database, 'interval', hours = 1, args = transpose_list)
 scheduler.start()
         
         
